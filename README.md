@@ -42,9 +42,7 @@ controle-academico-api/
 │   ├── 📁 routes/            # Definição de rotas da API
 │   ├── 📁 services/          # Lógica de negócio da aplicação
 │   └── 📁 utils/             # Utilitários e helpers
-├── 📁 scripts-mysql/         # Scripts SQL para o banco de dados
 ├── 📄 .editorconfig          # Configuração de estilo de código
-├── 📄 .env                   # Variáveis de ambiente (NÃO COMMITAR)
 ├── 📄 .env.example           # Template de variáveis de ambiente
 ├── 📄 .gitignore            # Arquivos ignorados pelo Git
 ├── 📄 app.js                # Configuração principal da aplicação
