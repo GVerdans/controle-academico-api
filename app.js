@@ -1,36 +1,13 @@
 require("dotenv").config();
 
-const materiasRepository = require("./src/repositories/materias.repository");
+const express = require("express");
+const routes = require("./src/routes");
+const app = express();
 
-(async () => {
-    try {
-        console.log("Buscando Materias ...");
+// Inicializa os middlewares
+app.use(express.json());
 
-        // const materias = await materiasRepository.findAll();
-        // console.log(materias);
+// Inicia a rota /api com as rotas indicadas no routes/index.js
+app.use("/api", routes);
 
-        // const materia = await materiasRepository.findById(1);
-        // console.log(materia);
-
-        // const newMateria = await materiasRepository.create({
-        //     id_periodo: 1,
-        //     nome: "introdução a programação de computadores",
-        //     nota_1: 10,
-        //     nota_2: 10,
-        //     media: 10,
-        //     status: "aprovado",
-        // });
-
-        // console.log(newMateria);
-
-        // const updateMateria = await materiasRepository.update(6, {
-        //     nota_1: 10,
-        //     nota_2: 10,
-        //     status: "aprovado",
-        // });
-
-        // console.log(updateMateria);
-    } catch (err) {
-        console.log("Erro ao buscar materias \n", err);
-    }
-})();
+module.exports = app;
