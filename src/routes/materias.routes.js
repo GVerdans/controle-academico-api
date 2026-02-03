@@ -6,6 +6,6 @@ const MateriasController = require("../controllers/materias.controller");
 router.get("/", MateriasController.list);
 router.post("/", MateriasController.create);
 router.put("/:id", MateriasController.update);
-// router.delete("/:id", materiasController.remove);
+router.delete("/:id", MateriasController.delete);
 
 module.exports = router;

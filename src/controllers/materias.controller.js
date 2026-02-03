@@ -2,6 +2,7 @@ const materiasRepository = require("../repositories/materias.repository");
 const MateriasRepository = require("../repositories/materias.repository");
 
 class MateriasController {
+    // Method to list all materias
     async list(req, res) {
         try {
             const materias = await MateriasRepository.findAll();
@@ -12,12 +13,14 @@ class MateriasController {
         }
     }
 
+    // Method to create ONE materia
     async create(req, res) {
-        const { id_periodo, nome, nota_1, nota_2, media, status } = req.body;
-
         try {
+            const { id_periodo, nome, nota_1, nota_2, media, status } =
+                req.body;
+
             if (!id_periodo || !nome) {
-                res.status(400).json({
+                return res.status(400).json({
                     error: "Please insert id_periodo and nome !",
                 });
             }
@@ -33,12 +36,16 @@ class MateriasController {
 
             return res
                 .status(201)
-                .json({ success: "Materia created !", newMateria });
+                .json({ success: "Materia created !", data: newMateria });
         } catch (e) {
-            return res.json({ error: "Failed to create Materia !", e });
+            return res.json({
+                error: "Failed to create Materia !",
+                details: e.message,
+            });
         }
     }
 
+    // method to update a materia
     async update(req, res) {
         try {
             const { id } = req.params;
@@ -67,7 +74,30 @@ class MateriasController {
         }
     }
 
-    // async delete(res, res) {}
+    // method to delete materia
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+
+            if (!id) {
+                return res.json({
+                    error: "Please insert id !",
+                });
+            }
+
+            const deleted = await MateriasRepository.delete(id);
+
+            return res.json({
+                message: `Materia ID: ${id}, success deleted !`,
+                deleted,
+            });
+        } catch (e) {
+            return res.json({
+                error: "Error to delete materia !",
+                details: e,
+            });
+        }
+    }
 }
 
 module.exports = new MateriasController();
