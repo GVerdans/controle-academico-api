@@ -10,8 +10,8 @@
 | Sprint   | Status          | Badge                                                                      |
 | -------- | --------------- | -------------------------------------------------------------------------- |
 | Sprint 1 | ✅ Concluída    | ![Sprint 1](https://img.shields.io/badge/sprint%201-concluída-success)     |
-| Sprint 2 | 🔄 Em andamento | ![Sprint 2](https://img.shields.io/badge/sprint%202-em%20andamento-yellow) |
-| Sprint 3 | 📅 Planejada    | ![Sprint 3](https://img.shields.io/badge/sprint%203-planejada-lightgrey)   |
+| Sprint 2 | 🔄 Em andamento | ![Sprint 2](https://img.shields.io/badge/sprint%201-concluída-success)     |
+| Sprint 3 | 📅 Planejada    | ![Sprint 3](https://img.shields.io/badge/sprint%203-em%20andamento-yellow) |
 
 ## 📋 Funcionalidades Implementadas (Sprint 1)
 
@@ -30,6 +30,21 @@
 - Chaves primárias e estrangeiras
 - Constraints UNIQUE compostos
 - Conexão segura com mysql2/promise
+
+---
+
+```
+ENDPOINTS:
+
+- GET: /api/materias/       --> List Materias
+- POST: / api/materias/     --> Create Materia
+- PUT: /api/materias/:id    --> Update Materia
+- DELETE: /api/materias/:id --> Delete Materia
+```
+
+---
+
+#### 👉 Project Structure
 
 ```
 controle-academico-api/
