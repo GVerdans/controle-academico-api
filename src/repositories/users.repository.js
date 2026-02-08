@@ -33,6 +33,16 @@ class userRepository {
             username,
         };
     }
+
+    async findByUsername(username) {
+        const [rows] = await db.execute(
+            `
+            SELECT * FROM users WHERE username = ? LIMIT 1
+            `,
+            [username],
+        );
+        return rows[0] || null;
+    }
 }
 
 module.exports = new userRepository();
