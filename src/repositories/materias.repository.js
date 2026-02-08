@@ -7,11 +7,7 @@ class MateriasRepository {
             SELECT
                 m.id_materia,
                 m.nome,
-                p.nome AS periodo,
-                m.nota_1,
-                m.nota_2,
-                m.media,
-                m.status
+                p.nome AS periodo
                 FROM materias m
                 JOIN periodo p ON p.id_periodo = m.id_periodo
                 ORDER BY m.id_materia DESC
@@ -26,11 +22,7 @@ class MateriasRepository {
             SELECT 
             m.id_materia,
             m.nome,
-            p.nome AS periodo,
-            m.nota_1,
-            m.nota_2,
-            m.media,
-            m.status
+            p.nome AS periodo
             FROM materias m JOIN periodo p ON p.id_periodo = m.id_periodo
             WHERE m.id_materia = ?
             LIMIT 1
@@ -42,20 +34,16 @@ class MateriasRepository {
 
     // Another one \/
     async create(data) {
-        const { id_periodo, nome, nota_1, nota_2, media, status } = data;
+        const { id_periodo, nome } = data;
 
         const [result] = await db.execute(
             `
             INSERT INTO materias (
             id_periodo, 
-            nome, 
-            nota_1, 
-            nota_2, 
-            media, 
-            status) 
-            VALUES (?, ?, ?, ?, ?, ?)
+            nome) 
+            VALUES (?, ?)
             `,
-            [id_periodo, nome, nota_1, nota_2, media, status],
+            [id_periodo, nome],
         );
 
         return {
@@ -67,28 +55,17 @@ class MateriasRepository {
     // Another one \/
     async update(id, data) {
         const nome = data.nome ?? null;
-        const nota_1 = data.nota_1 ?? null;
-        const nota_2 = data.nota_2 ?? null;
-        const status = data.status ?? null;
-
-        let media = null;
-
-        if (nota_1 !== null && nota_2 !== null) {
-            media = (Number(nota_1) + Number(nota_2)) / 2;
-        }
+        const id_periodo = data.id_periodo ?? null;
 
         const [result] = await db.execute(
             `
             UPDATE materias SET
             nome = COALESCE(?, nome),
-            nota_1 = COALESCE(?, nota_1),
-            nota_2 = COALESCE(?, nota_2),
-            media = COALESCE(?, media),
-            status = COALESCE(?, status),
+            id_periodo = COALESCE(?, id_periodo),
             updated_at = NOW()
             WHERE id_materia = ?
             `,
-            [nome, nota_1, nota_2, media, status, id],
+            [nome, id_periodo, id],
         );
 
         return result.affectedRows > 0;

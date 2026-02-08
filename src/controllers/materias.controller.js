@@ -15,8 +15,7 @@ class MateriasController {
     // Method to create ONE materia
     async create(req, res) {
         try {
-            const { id_periodo, nome, nota_1, nota_2, media, status } =
-                req.body;
+            const { id_periodo, nome } = req.body;
 
             if (!id_periodo || !nome) {
                 return res.status(400).json({
@@ -27,10 +26,6 @@ class MateriasController {
             const newMateria = await MateriasRepository.create({
                 id_periodo,
                 nome,
-                nota_1,
-                nota_2,
-                media,
-                status,
             });
 
             return res
@@ -50,13 +45,13 @@ class MateriasController {
             const { id } = req.params;
             const data = req.body;
 
-            if (!id || !data) {
+            if (!id) {
                 return res.status(400).json({
-                    error: "Please insert id or data !",
+                    error: "Please insert ID of the Materia !",
                 });
             }
 
-            const updatedMateria = await materiasRepository.update(id, data);
+            const updatedMateria = await MateriasRepository.update(id, data);
             if (!updatedMateria) {
                 return res.status(400).json({
                     error: `Materia not found or not updated !`,
@@ -69,6 +64,7 @@ class MateriasController {
         } catch (e) {
             res.json({
                 error: "Failed to update !",
+                message: e.message,
             });
         }
     }
