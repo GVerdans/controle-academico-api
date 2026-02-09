@@ -7,62 +7,119 @@
 
 ## 📈 Progresso
 
-| Sprint   | Status          | Badge                                                                      |
-| -------- | --------------- | -------------------------------------------------------------------------- |
-| Sprint 1 | ✅ Concluída    | ![Sprint 1](https://img.shields.io/badge/sprint%201-concluída-success)     |
-| Sprint 2 | ✅ Concluída    | ![Sprint 2](https://img.shields.io/badge/sprint%202-concluída-success)     |
-| Sprint 3 | 🔄 Em andamento | ![Sprint 3](https://img.shields.io/badge/sprint%203-em%20andamento-yellow) |
+| Sprint   | Status         | Badge                                                                     |
+| -------- | -------------- | ------------------------------------------------------------------------- |
+| Sprint 1 | ✅ Completed   | ![Sprint 1](https://img.shields.io/badge/sprint%201-Completed-success)    |
+| Sprint 2 | ✅ Completed   | ![Sprint 2](https://img.shields.io/badge/sprint%202-Complted-success)     |
+| Sprint 3 | 🔄 In Progress | ![Sprint 3](https://img.shields.io/badge/sprint%203-In%20Progress-yellow) |
 
-## 📋 Funcionalidades Implementadas (Sprint 1)
+## 📋 Implemented Features (Sprint 1)
 
-✅ CRUD Completo
+✅ Full CRUD Operations
 
-- Create: Inserção de registros acadêmicos
-- Read: Consultas com filtros e busca por ID
-- Update: Atualização parcial com recálculo de médias
-- Delete: Remoção segura de registros
+- Create: Register new academic record
+- Read: Retrieve academic data by ID
+- Update: Modify records with automatic average calculation
+- zDelete: Remove academic record
+
+---
+
+🗄️ Database
+
+- Relational modeling using MySQL
+- Proper use of primary and foreign keys
+- Composite UNIQUE constraints
+- Secure database connection with `mysql2/promise`
 
 ---
 
-🗄️ Banco de Dados
+## 🔐 Authentication & Security
 
-- Modelagem relacional com MySQL
-- Chaves primárias e estrangeiras
-- Constraints UNIQUE compostos
-- Conexão segura com mysql2/promise
+- JWT-based authentication
+- Protected routes using middleware
+- User identity extracted from token (req.user.id)
+- Password hashing with bcrypt
 
----
+## 🚀 API Endpoints
 
 ```
-ENDPOINTS:
+USERS
+---------------------------------------------------
+GET    /api/users/           -> List users [AUTH REQUIRED]
+POST   /api/users/           -> Create a new user
+        Required JSON body:
+        { name, username, password }
 
-- GET: /api/materias/       --> List Materias
-- POST: / api/materias/     --> Create Materia
-- PUT: /api/materias/:id    --> Update Materia
-- DELETE: /api/materias/:id --> Delete Materia
+
+AUTH
+---------------------------------------------------
+POST   /api/auth/login       -> User login
+        Required JSON body:
+        { username, password }
+        Returns JWT token
+
+
+
+MATERIAS
+[AUTH REQUIRED]
+---------------------------------------------------
+GET    /api/materias/        -> List all subjects
+POST   /api/materias/        -> Create a subject
+        Required JSON body:
+        { id_periodo, nome }
+
+PUT    /api/materias/:id     -> Update a subject
+DELETE /api/materias/:id     -> Delete a subject
+
+
+
+USER SUBJECT ENROLLMENT
+[AUTH REQUIRED]
+---------------------------------------------------
+POST   /api/users-materias/enroll
+       -> Enroll logged user in a subject
+       Required JSON body:
+       { id_materia }
+
+GET    /api/users-materias/
+       -> List all subjects the logged user is enrolled in
+
+PUT    /api/users-materias/:id_matricula
+       -> Update grades for an enrolled subject
+       Required JSON body:
+       { nota_1, nota_2 }
+       (Average grade calculated automatically)
 ```
 
----
-
-#### 👉 Project Structure
+## 🧱 Project Structure
 
 ```
 controle-academico-api/
-├── 📁 src/                    # Código fonte principal
-│   ├── 📁 config/            # Configurações da aplicação
-│   │   └── database.js       # Configuração do banco de dados
-│   ├── 📁 controllers/       # Controladores da API
-│   ├── 📁 middlewares/       # Middlewares customizados
-│   ├── 📁 repositories/      # Camada de acesso a dados (Repository Pattern)
-│   ├── 📁 routes/            # Definição de rotas da API
-│   ├── 📁 services/          # Lógica de negócio da aplicação
-│   └── 📁 utils/             # Utilitários e helpers
-├── 📄 .editorconfig          # Configuração de estilo de código
-├── 📄 .env.example           # Template de variáveis de ambiente
-├── 📄 .gitignore            # Arquivos ignorados pelo Git
-├── 📄 app.js                # Configuração principal da aplicação
-├── 📄 LICENSE               # Licença MIT
-├── 📄 package.json          # Dependências e scripts do projeto
-├── 📄 README.md             # Documentação do projeto
-└── 📄 server.js             # Ponto de entrada da aplicação
+├── src/
+│   ├── config/              # Application configuration
+│   │   └── database.js      # Database connection setup
+│   ├── controllers/         # Request handlers
+│   ├── middlewares/         # Custom middlewares (JWT auth, etc.)
+│   ├── repositories/        # Data access layer (Repository Pattern)
+│   ├── routes/              # API routes
+│   ├── services/            # Business logic
+│   └── utils/               # Helpers and utilities
+├── .editorconfig
+├── .env.example
+├── .gitignore
+├── app.js                   # Express app configuration
+├── server.js                # Application entry point
+├── package.json
+├── LICENSE                  # MIT License
+└── README.md
+
+```
+
+## 🚀 How to Run
+
+```
+1. Clone the repository
+2. Install dependencies
+3. Configure .env
+4. Run: npm run dev
 ```

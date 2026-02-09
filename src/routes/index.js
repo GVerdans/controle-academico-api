@@ -15,6 +15,6 @@ router.get("/", (req, res) => {
 router.use("/materias", authMiddleware, materiasRoutes);
 router.use("/users", usersRoutes);
 router.use("/auth", authRoutes);
-router.use("/users-materias", usersMateriasRoutes);
+router.use("/users-materias", authMiddleware, usersMateriasRoutes);
 
 module.exports = router;
