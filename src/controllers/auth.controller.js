@@ -18,14 +18,14 @@ class AuthController {
             const user = await userRepository.findByUsername(username);
             if (!user) {
                 return res.status(400).json({
-                    error: "Invalid Username !",
+                    error: "Invalid Credentials !",
                 });
             }
 
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (!passwordMatch) {
                 return res.status(400).json({
-                    error: "Invalid password !",
+                    error: "Invalid Credentials !",
                 });
             }
 

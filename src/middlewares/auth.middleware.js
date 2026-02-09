@@ -12,7 +12,7 @@ function authMiddleware(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        req.user = decoded; // Aqui nasce o req.user
         return next();
     } catch (err) {
         return res.status(401).json({
