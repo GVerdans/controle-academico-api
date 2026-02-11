@@ -32,7 +32,7 @@ class AuthController {
             const newUser = await userRepository.createUser({
                 name,
                 username,
-                // password: passwordHash, // Só pra teste. Retirar depois
+                password: passwordHash, // Só pra teste. Retirar depois
             });
 
             return res.json({
