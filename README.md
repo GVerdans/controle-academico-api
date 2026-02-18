@@ -121,5 +121,7 @@ controle-academico-api/
 1. Clone the repository
 2. Install dependencies
 3. Configure .env
-4. Run: npm run dev
+4. Import SQL structure (/config/structure_controle_api.sql)
+5. Seed the tables in this order (Instituicoes, cursos, periodos, materias)
+6. Run: npm run dev
 ```
