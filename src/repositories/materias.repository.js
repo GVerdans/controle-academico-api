@@ -3,7 +3,7 @@ const db = require("../config/database");
 class MateriasRepository {
     // Method \/
     async findAll() {
-        const [rows] = await db.execute(`
+        const [rows] = await db.query(`
             SELECT
                 m.id_materia,
                 m.nome,
@@ -11,20 +11,20 @@ class MateriasRepository {
                 FROM materias m
                 JOIN periodo p ON p.id_periodo = m.id_periodo
                 ORDER BY m.id_materia DESC
-            `);
+        `);
         return rows;
     }
 
     // Another one\/
     async findById(id) {
-        const [rows] = await db.execute(
+        const [rows] = await db.query(
             `
             SELECT 
             m.id_materia,
             m.nome,
             p.nome AS periodo
             FROM materias m JOIN periodo p ON p.id_periodo = m.id_periodo
-            WHERE m.id_materia = ?
+            WHERE m.id_materia = $1
             LIMIT 1
             `,
             [id],
@@ -36,18 +36,19 @@ class MateriasRepository {
     async create(data) {
         const { id_periodo, nome } = data;
 
-        const [result] = await db.execute(
+        const [result] = await db.query(
             `
             INSERT INTO materias (
             id_periodo, 
             nome) 
-            VALUES (?, ?)
+            VALUES ($1, $2)
+            RETURNING id_materia
             `,
             [id_periodo, nome],
         );
 
         return {
-            id_materia: result.insertId,
+            id_materia: result[0].id_materia,
             ...data,
         };
     }
@@ -57,30 +58,28 @@ class MateriasRepository {
         const nome = data.nome ?? null;
         const id_periodo = data.id_periodo ?? null;
 
-        const [result] = await db.execute(
+        const [result] = await db.query(
             `
             UPDATE materias SET
-            nome = COALESCE(?, nome),
-            id_periodo = COALESCE(?, id_periodo),
+            nome = COALESCE($1, nome),
+            id_periodo = COALESCE($2, id_periodo),
             updated_at = NOW()
-            WHERE id_materia = ?
+            WHERE id_materia = $3
             `,
             [nome, id_periodo, id],
         );
 
-        return result.affectedRows > 0;
+        return result.rowCount > 0;
     }
 
     async delete(id) {
-        const [result] = await db.execute(
+        const [result] = await db.query(
             `
-            DELETE FROM materias WHERE id_materia = ?
+            DELETE FROM materias WHERE id_materia = $1
             `,
             [id],
         );
 
-        return result.affectedRows > 0;
+        return result.rowCount > 0;
     }
 }
-
-module.exports = new MateriasRepository();
