@@ -52,6 +52,20 @@ class UsersMateriasRepository {
 
         return result.rowCount > 0;
     }
+
+    async findAll() {
+        const result = await db.query(`
+    SELECT 
+      m.id_materia,
+      m.nome,
+      p.nome AS periodo
+    FROM materias m
+    JOIN periodo p ON p.id_periodo = m.id_periodo
+    ORDER BY m.nome ASC
+  `);
+
+        return result.rows;
+    }
 }
 
 module.exports = new UsersMateriasRepository();
