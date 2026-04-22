@@ -1,85 +1,57 @@
 const db = require("../config/database");
 
-class MateriasRepository {
-    // Method \/
-    async findAll() {
-        const [rows] = await db.query(`
-            SELECT
-                m.id_materia,
-                m.nome,
-                p.nome AS periodo
-                FROM materias m
-                JOIN periodo p ON p.id_periodo = m.id_periodo
-                ORDER BY m.id_materia DESC
-        `);
-        return rows;
-    }
+class UsersMateriasRepository {
+    async enroll(userId, materiaId) {
+        let status = "cursando";
 
-    // Another one\/
-    async findById(id) {
-        const [rows] = await db.query(
+        const result = await db.query(
             `
-            SELECT 
-            m.id_materia,
-            m.nome,
-            p.nome AS periodo
-            FROM materias m JOIN periodo p ON p.id_periodo = m.id_periodo
-            WHERE m.id_materia = $1
-            LIMIT 1
-            `,
-            [id],
-        );
-        return rows[0] || null;
-    }
-
-    // Another one \/
-    async create(data) {
-        const { id_periodo, nome } = data;
-
-        const [result] = await db.query(
-            `
-            INSERT INTO materias (
-            id_periodo, 
-            nome) 
-            VALUES ($1, $2)
-            RETURNING id_materia
-            `,
-            [id_periodo, nome],
+      INSERT INTO users_materias (id_user, id_materia, status)
+      VALUES($1, $2, $3)
+      RETURNING id_matricula
+      `,
+            [userId, materiaId, status],
         );
 
-        return {
-            id_materia: result[0].id_materia,
-            ...data,
-        };
+        return result.rows[0].id_matricula;
     }
 
-    // Another one \/
-    async update(id, data) {
-        const nome = data.nome ?? null;
-        const id_periodo = data.id_periodo ?? null;
-
-        const [result] = await db.query(
+    async findByUser(userId) {
+        const result = await db.query(
             `
-            UPDATE materias SET
-            nome = COALESCE($1, nome),
-            id_periodo = COALESCE($2, id_periodo),
-            updated_at = NOW()
-            WHERE id_materia = $3
-            `,
-            [nome, id_periodo, id],
+      SELECT 
+        um.id_matricula,
+        m.id_materia,
+        m.nome,
+        um.nota_1,
+        um.nota_2,
+        um.media,
+        um.status
+      FROM users_materias um
+      JOIN materias m ON m.id_materia = um.id_materia
+      WHERE um.id_user = $1
+      `,
+            [userId],
         );
 
-        return result.rowCount > 0;
+        return result.rows;
     }
 
-    async delete(id) {
-        const [result] = await db.query(
+    async updateGrades(userId, id_matricula, nota_1, nota_2) {
+        const media = (Number(nota_1) + Number(nota_2)) / 2;
+        let status = media >= 6 ? "aprovado" : "reprovado";
+
+        const result = await db.query(
             `
-            DELETE FROM materias WHERE id_materia = $1
-            `,
-            [id],
+      UPDATE users_materias
+      SET nota_1 = $1, nota_2 = $2, media = $3, status = $4
+      WHERE id_matricula = $5 AND id_user = $6
+      `,
+            [nota_1, nota_2, media, status, id_matricula, userId],
         );
 
         return result.rowCount > 0;
     }
 }
+
+module.exports = new UsersMateriasRepository();
