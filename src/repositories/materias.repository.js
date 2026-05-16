@@ -53,7 +53,7 @@ class MateriasRepository {
         };
     }
 
-    // Another one \/
+    // Another one
     async update(id, data) {
         const nome = data.nome ?? null;
         const id_periodo = data.id_periodo ?? null;
