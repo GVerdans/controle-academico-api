@@ -32,7 +32,7 @@ class MateriasController {
                 .status(201)
                 .json({ success: "Materia created !", data: newMateria });
         } catch (e) {
-            return res.json({
+            return res.status(400).json({
                 error: "Failed to create Materia !",
                 details: e.message,
             });
