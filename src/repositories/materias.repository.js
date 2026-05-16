@@ -83,3 +83,5 @@ class MateriasRepository {
         return result.rowCount > 0;
     }
 }
+
+module.exports = new MateriasRepository();
