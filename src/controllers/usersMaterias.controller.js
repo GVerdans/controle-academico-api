@@ -1,4 +1,3 @@
-const usersMateriasRepository = require("../repositories/usersMaterias.repository");
 const UsersMateriasRepository = require("../repositories/usersMaterias.repository");
 
 class UsersMateriasController {
