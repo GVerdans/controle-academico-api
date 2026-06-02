@@ -1,3 +1,5 @@
 node_modules
 .env
 scripts_MySQL
+init_supabase.sql
+structure_controle_api.sql
