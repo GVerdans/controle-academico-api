@@ -60,7 +60,7 @@ class UsersMateriasController {
                 });
             }
 
-            const updateMateria = await usersMateriasRepository.updateGrades(
+            const updateMateria = await UsersMateriasRepository.updateGrades(
                 userId,
                 idMatricula,
                 nota_1,
