@@ -55,7 +55,7 @@ class UsersMateriasController {
             }
 
             if (nota_1 == null || nota_2 == null) {
-                res.status(200).json({
+                return res.status(400).json({
                     error: "nota_1 and nota_2 are required !",
                 });
             }
@@ -68,7 +68,7 @@ class UsersMateriasController {
             );
 
             if (!updateMateria) {
-                res.status(400).json({
+                return res.status(404).json({
                     error: "Materia not found. Please verify if you are enrolled in this materia !",
                 });
             }
